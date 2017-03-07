@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from "moment";
 
 class Message extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class TimeAgo extends Component {
     return React.createElement(
       "small",
       { className: "time-ago" },
-      this.props.children
+      moment(this.props.children).fromNow()
     );
   }
 }
