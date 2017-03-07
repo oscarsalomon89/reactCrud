@@ -22084,11 +22084,7 @@ class Message extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
       ),
       this.props.children,
       " ",
-      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-        TimeAgo,
-        null,
-        this.props.time
-      )
+      __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(TimeAgo, { time: this.props.time })
     );
   }
 }
@@ -22102,7 +22098,7 @@ class TimeAgo extends __WEBPACK_IMPORTED_MODULE_0_react__["Component"] {
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
       "small",
       { className: "time-ago" },
-      __WEBPACK_IMPORTED_MODULE_1_moment___default()(this.props.children).fromNow()
+      __WEBPACK_IMPORTED_MODULE_1_moment___default()(this.props.time).fromNow()
     );
   }
 }

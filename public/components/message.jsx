@@ -9,7 +9,7 @@ class Message extends Component{
   render() {
     return (
       <li className="message"><strong>{this.props.name}:</strong>
-       {this.props.children} <TimeAgo>{this.props.time}</TimeAgo></li>
+       {this.props.children} <TimeAgo time={this.props.time}/></li>
     );
   }
 }
@@ -21,7 +21,7 @@ class TimeAgo extends Component{
 
   render() {
     return (
-      <small className="time-ago">{moment(this.props.children).fromNow()}</small>
+      <small className="time-ago">{moment(this.props.time).fromNow()}</small>
     );
   }
 }

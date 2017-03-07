@@ -18,11 +18,7 @@ class Message extends Component {
       ),
       this.props.children,
       " ",
-      React.createElement(
-        TimeAgo,
-        null,
-        this.props.time
-      )
+      React.createElement(TimeAgo, { time: this.props.time })
     );
   }
 }
@@ -36,7 +32,7 @@ class TimeAgo extends Component {
     return React.createElement(
       "small",
       { className: "time-ago" },
-      moment(this.props.children).fromNow()
+      moment(this.props.time).fromNow()
     );
   }
 }
