@@ -1,7 +1,8 @@
 var bodyParser = require('body-parser');
 var express = require('express');
-var fs = require('fs');
+var Message = require('./models/message');
 
+var mongoose = require('mongoose');
 var app = express();
 
 app.use(bodyParser.json());
@@ -9,17 +10,18 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('todo'));
 app.use(express.static(__dirname + '/public'));
 
+mongoose.connect('mongodb://localhost/reactCrud');
+
 app.get('/api/todos', function(req, res) {
-  fs.readFile('db/todos.json', function(err, data) {
-    if (err) throw err;
-    try {
-      return res.json(JSON.parse(data));
-    }
-    catch (err) {
-      console.log(err);
-      return res.json([]);
-    }
-  });
+  Message.find()
+        .sort({time: 'asc'})
+        .exec(function(error,messages){
+          if(error){
+              console.log('error');
+           }else{
+               return res.json(messages);
+           }
+        });
 });
 
 app.get('/', function(req, res) {
@@ -27,54 +29,28 @@ app.get('/', function(req, res) {
 });
 
 app.post('/api/todos', function(req, res) {
-  fs.readFile('db/todos.json', function(err, data) {
-    if (err) throw err;
-    try {
-      var mesaggeList = JSON.parse(data);
-      var message = {
-        id: mesaggeList[mesaggeList.length - 1].id + 1,
-        username: req.body.username,
-        body: req.body.body,
-        time: req.body.time
-      }
-      mesaggeList.push(message);
+    Message.count({},function(err,cantidad) {
+      
+    //Parámetros para la inserción de datos
+    var valorId = (cantidad + 1);
+    var parametros = {
+       id: valorId,
+       username: req.body.username,
+       body: req.body.body,
+       time: new Date()
+    };
 
-      fs.writeFile('db/todos.json', JSON.stringify(mesaggeList), function(err) {
-        if (err) throw err;
-      });
-
-      return res.json(mesaggeList);
-    }
-    catch (err) {
-      console.log(err);
-      return res.json([]);
-    }
-  });
+    //Realizo la inserción de datos
+    new Message(parametros).save(function(error, mensaje){
+       if (error) {
+          return console.log('error');
+       } else {
+          return res.json(mensaje);
+       }
+    });
+  })
 });
 
-app.post('/api/todos/done', function(req, res) {
-  fs.readFile('db/todos.json', function(err, data) {
-    if (err) throw err;
-    try {
-      var todoList = JSON.parse(data);
-      var todoId = parseInt(req.body.todoId);
-      todoList = todoList.map(function(todo) {
-        if (todoId === todo.id) todo.done = true;
-        return todo;
-      });
-
-      fs.writeFile('todos.json', JSON.stringify(todoList), function(err) {
-        if (err) throw err;
-      });
-
-      return res.json(todoList);
-    }
-    catch (err) {
-      console.log(err);
-      return res.json([]);
-    }
-  });
-});
 
 app.listen(3000, function() {
   console.log('Running on 127.0.0.1:3000...');

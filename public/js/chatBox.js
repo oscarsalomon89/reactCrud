@@ -7,7 +7,14 @@ class ChatBox extends Component {
     super(props);
     this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
     this.state = { messageList: [] };
+    this.obtenerMensajes = this.obtenerMensajes.bind(this);
+  }
 
+  componentDidMount() {
+    this.obtenerMensajes();
+  }
+
+  obtenerMensajes() {
     $.ajax({
       url: "/api/todos",
       dataType: 'json',
@@ -32,7 +39,7 @@ class ChatBox extends Component {
       type: 'POST',
       data: message,
       success: function (data) {
-        this.setState({ messageList: data });
+        this.obtenerMensajes();
       }.bind(this),
       error: function (xhr, status, err) {
         console.error('/api/todos', status, err.toString());
