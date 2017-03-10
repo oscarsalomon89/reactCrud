@@ -12,6 +12,11 @@ app.use(express.static(__dirname + '/public'));
 
 mongoose.connect('mongodb://localhost/reactCrud');
 
+app.get('/', function(req, res) {
+  res.sendFile(__dirname +'/public/index.html');
+});
+
+//Trae todos los mensajes
 app.get('/api/todos', function(req, res) {
   Message.find()
         .sort({time: 'asc'})
@@ -24,10 +29,7 @@ app.get('/api/todos', function(req, res) {
         });
 });
 
-app.get('/', function(req, res) {
-  res.sendFile(__dirname +'/public/index.html');
-});
-
+//Guarda en la base de datos
 app.post('/api/todos', function(req, res) {
     Message.count({},function(err,cantidad) {
       
