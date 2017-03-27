@@ -1,43 +1,37 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
+import { addMessage } from '../actions';
 
-class ChatForm extends Component {
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+let ChatForm = ({ dispatch }) => {
+  let input;
 
-  handleSubmit(event) {
-    event.preventDefault();
-
-    var message = {
-      username: this.refs.username.value.trim(),
-      body: this.refs.body.value.trim(),
-      time: new Date()
-    };
-
-    if (!message.username || !message.body) {
-      return;
-    }
-
-    this.props.onMessageSubmit(message);
-    this.refs.body.value = '';
-    this.refs.username.value = '';
-    this.refs.username.focus();
-  }
-
-  render() {
-    return React.createElement(
+  return React.createElement(
+    'div',
+    null,
+    React.createElement(
       'form',
-      { className: 'chat-form', onSubmit: this.handleSubmit },
-      React.createElement('input', { className: 'input username-input', type: 'text', placeholder: 'Nombre de usuario', ref: 'username' }),
-      React.createElement('input', { className: 'input body-input', type: 'text', placeholder: '\xA1Escribe algo! :D', ref: 'body' }),
+      { onSubmit: e => {
+          e.preventDefault();
+          if (!input.value.trim()) {
+            return;
+          }
+          dispatch(addMessage(input.username, input.body));
+          input.value = '';
+        } },
+      React.createElement('input', { ref: username => {
+          input = username;
+        } }),
+      React.createElement('input', { ref: body => {
+          input = body;
+        } }),
       React.createElement(
         'button',
-        { className: 'button' },
-        'Enviar'
+        { type: 'submit' },
+        'Add Todo'
       )
-    );
-  }
-}
+    )
+  );
+};
+ChatForm = connect()(ChatForm);
 
 export default ChatForm;

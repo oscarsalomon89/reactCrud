@@ -1,29 +1,13 @@
-import React, { Component } from 'react';
+import React, { PropTypes } from 'react';
 import moment from "moment";
 
-class Message extends Component{
-	constructor(props) {    
-	    super(props);
-	  }
+const Message = ({ props }) => (
+  <li className="message"><strong>{props.name}:</strong>
+       {moment(props.time).fromNow()} </li>
+)
 
-  render() {
-    return (
-      <li className="message"><strong>{this.props.name}:</strong>
-       {this.props.children} <TimeAgo time={this.props.time}/></li>
-    );
-  }
+Message.propTypes = {
+  text: PropTypes.string.isRequired
 }
 
-class TimeAgo extends Component{
-  constructor(props) {    
-      super(props);
-    }
-
-  render() {
-    return (
-      <small className="time-ago">{moment(this.props.time).fromNow()}</small>
-    );
-  }
-}
-
-export default Message;
+export default Message

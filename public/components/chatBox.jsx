@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import MessageList from './messageList';
+import MessageList from '../containers/messageList';
 import ChatForm from './chatForm';
+//import AddMessage from '../containers/AddMessage';
 
-class ChatBox extends Component{
+/*class ChatBox extends Component{
   constructor(props) {
     super(props);
     this.handleMessageSubmit = this.handleMessageSubmit.bind(this);
@@ -61,6 +62,18 @@ class ChatBox extends Component{
       </div>
     );
   }
-}
+}*/
+
+const ChatBox = () => (  
+
+  <div className="chat-box">
+        <div className="App-header">
+          <h2>Welcome to React</h2>
+        </div>
+        <h1 className="title">Chat con ReactJS</h1>
+        <MessageList />
+        <ChatForm />
+      </div>
+)
 
 export default ChatBox;
