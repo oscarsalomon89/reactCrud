@@ -3,23 +3,24 @@ import { connect } from 'react-redux'
 import { addMessage } from '../actions'
 
 let ChatForm = ({ dispatch }) => {
-  let input
+  let inputU, inputB
 
   return (
     <div>
       <form onSubmit={e => {
         e.preventDefault()
-        if (!input.value.trim()) {
+        if (!inputU.value.trim()) {
           return
         }
-        dispatch(addMessage(input.username,input.body))
-        input.value = ''
+        dispatch(addMessage(inputU.value,inputB.value));
+        inputU.value = '';
+        inputB.value = '';
       }}>
         <input ref={username => {
-          input = username
+          inputU = username
         }} />
         <input ref={body => {
-          input = body
+          inputB = body
         }} />
         <button type="submit">
           Add Todo
@@ -28,6 +29,7 @@ let ChatForm = ({ dispatch }) => {
     </div>
   )
 }
+
 ChatForm = connect()(ChatForm)
 
 export default ChatForm

@@ -6,8 +6,4 @@ const Message = ({ props }) => (
        {moment(props.time).fromNow()} </li>
 )
 
-Message.propTypes = {
-  text: PropTypes.string.isRequired
-}
-
 export default Message

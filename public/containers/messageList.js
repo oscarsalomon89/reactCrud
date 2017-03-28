@@ -3,13 +3,12 @@ import { toggleTodo } from '../actions'
 import TodoList from '../js/TodoList'
 
 const getVisibleTodos = (todos) => {
-     console.log(todos);
       $.ajax({
       url: "/api/todos",
       dataType: 'json',
       cache: false,
       success: function(data) {
-        //console.log(data);
+        return data;
       }.bind(this),
       error: function(xhr, status, err) {
           console.error("/api/todos", status, err.toString());

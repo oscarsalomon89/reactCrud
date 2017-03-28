@@ -14,8 +14,4 @@ const Message = ({ props }) => React.createElement(
   " "
 );
 
-Message.propTypes = {
-  text: PropTypes.string.isRequired
-};
-
 export default Message;

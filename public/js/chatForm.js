@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { addMessage } from '../actions';
 
 let ChatForm = ({ dispatch }) => {
-  let input;
+  let inputU, inputB;
 
   return React.createElement(
     'div',
@@ -12,17 +12,18 @@ let ChatForm = ({ dispatch }) => {
       'form',
       { onSubmit: e => {
           e.preventDefault();
-          if (!input.value.trim()) {
+          if (!inputU.value.trim()) {
             return;
           }
-          dispatch(addMessage(input.username, input.body));
-          input.value = '';
+          dispatch(addMessage(inputU.value, inputB.value));
+          inputU.value = '';
+          inputB.value = '';
         } },
       React.createElement('input', { ref: username => {
-          input = username;
+          inputU = username;
         } }),
       React.createElement('input', { ref: body => {
-          input = body;
+          inputB = body;
         } }),
       React.createElement(
         'button',
@@ -32,6 +33,7 @@ let ChatForm = ({ dispatch }) => {
     )
   );
 };
+
 ChatForm = connect()(ChatForm);
 
 export default ChatForm;
