@@ -41,7 +41,6 @@ app.post('/api/todos', function(req, res) {
        body: req.body.body,
        time: new Date()
     };
-    console.log('hola');
     //Realizo la inserción de datos
     new Message(parametros).save(function(error, mensaje){
        if (error) {

@@ -25366,43 +25366,18 @@ module.exports = function(module) {
  * creadores de acciones
  */
 
-const addMessage = (username,body) => {
-  var message = {
-      username: username.trim(),
-      body: body.trim(),
-    }
-
-  $.ajax({
-        url: '/api/todos',
-        dataType: 'json',
-        type: 'POST',
-        data: message,
-        success: function(data) {
-            //dispatch(obtenerMensajes());
-        }.bind(this),
-        error: function(xhr, status, err) {
-            console.error('/api/todos', status, err.toString());
-        }.bind(this)
-    });
-}
+const addMessage = (username,body) => ({
+  type: 'ADD_MESSAGE',
+  username: username,
+  body:body
+})
 /* harmony export (immutable) */ __webpack_exports__["a"] = addMessage;
 
 
 const obtenerMensajes = () => {
-
-  $.ajax({
-      url: "/api/todos",
-      dataType: 'json',
-      cache: false,
-      success: function(data) {
-        console.log(data);
-      }.bind(this),
-      error: function(xhr, status, err) {
-          console.error("/api/todos", status, err.toString());
-      }.bind(this)
-    })
+    type: 'GET_MESSAGES'  
 }
-/* unused harmony export obtenerMensajes */
+/* harmony export (immutable) */ __webpack_exports__["b"] = obtenerMensajes;
 
 
 /***/ }),
@@ -39479,25 +39454,19 @@ function symbolObservablePonyfill(root) {
 
 
 
-const getVisibleTodos = (todos) => {
-      $.ajax({
-      url: "/api/todos",
-      dataType: 'json',
-      cache: false,
-      success: function(data) {
-        return data;
-      }.bind(this),
-      error: function(xhr, status, err) {
-          console.error("/api/todos", status, err.toString());
-      }.bind(this)
-    })    
+const getVisibleTodos = (todos) => {    
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__actions__["b" /* obtenerMensajes */])();      
     return todos;  
   }
 
 
-const mapStateToProps = (state) => ({  
+const mapStateToProps = (state) => ({
   todos: getVisibleTodos(state.todos)
 })
+
+const mapDispatchToProps = {
+  todos: __WEBPACK_IMPORTED_MODULE_1__actions__["b" /* obtenerMensajes */]
+}
 
 const MessageList = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_react_redux__["b" /* connect */])(
   mapStateToProps
@@ -39611,39 +39580,56 @@ ChatForm = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1_react_redux__["b" /
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-const todo = (state, action) => {
+//Cambia el estado de la aplicacion
+const todo = (action) => {
   switch (action.type) {
-    case 'ADD_TODO':
-      return {
-        id: action.id,
-        text: action.text,
-        completed: false
-      }
-    case 'TOGGLE_TODO':
-      if (state.id !== action.id) {
-        return state
+    case 'GET_MESSAGES':
+      $.ajax({
+      url: "/api/todos",
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        return data;
+      }.bind(this),
+      error: function(xhr, status, err) {
+          console.error("/api/todos", status, err.toString());
+      }.bind(this)
+    })
+    case 'ADD_MESSAGE':
+      var message = {
+        username: action.username.trim(),
+        body: action.body.trim(),
       }
 
-      return {
-        state,
-        completed: !state.completed
-      }
-    default:
-      return state
+      $.ajax({
+          url: '/api/todos',
+          dataType: 'json',
+          type: 'POST',
+          data: message,
+          success: function(data) {
+              return data;
+          }.bind(this),
+          error: function(xhr, status, err) {
+              console.error('/api/todos', status, err.toString());
+          }.bind(this)
+      });
+      return;
   }
 }
 
 const todos = (state = [], action) => {
+  console.log(action.type);
   switch (action.type) {
-    case 'ADD_TODO':
+    case 'GET_MESSAGES':
       return [
-        state,
-        todo(undefined, action)
+        ...state,
+        todo(action)
       ]
-    case 'TOGGLE_TODO':
-      return state.map(t =>
-        todo(t, action)
-      )
+    case 'ADD_MESSAGE':
+      return [
+        ...state,
+        todo(action)
+      ]
     default:
       return state
   }

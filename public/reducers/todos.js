@@ -1,36 +1,53 @@
-const todo = (state, action) => {
+//Cambia el estado de la aplicacion
+const todo = (action) => {
   switch (action.type) {
-    case 'ADD_TODO':
-      return {
-        id: action.id,
-        text: action.text,
-        completed: false
-      }
-    case 'TOGGLE_TODO':
-      if (state.id !== action.id) {
-        return state
+    case 'GET_MESSAGES':
+      $.ajax({
+      url: "/api/todos",
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        return data;
+      }.bind(this),
+      error: function(xhr, status, err) {
+          console.error("/api/todos", status, err.toString());
+      }.bind(this)
+    })
+    case 'ADD_MESSAGE':
+      var message = {
+        username: action.username.trim(),
+        body: action.body.trim(),
       }
 
-      return {
-        state,
-        completed: !state.completed
-      }
-    default:
-      return state
+      $.ajax({
+          url: '/api/todos',
+          dataType: 'json',
+          type: 'POST',
+          data: message,
+          success: function(data) {
+              return data;
+          }.bind(this),
+          error: function(xhr, status, err) {
+              console.error('/api/todos', status, err.toString());
+          }.bind(this)
+      });
+      return;
   }
 }
 
 const todos = (state = [], action) => {
+  console.log(action.type);
   switch (action.type) {
-    case 'ADD_TODO':
+    case 'GET_MESSAGES':
       return [
-        state,
-        todo(undefined, action)
+        ...state,
+        todo(action)
       ]
-    case 'TOGGLE_TODO':
-      return state.map(t =>
-        todo(t, action)
-      )
+    case 'ADD_MESSAGE':
+      return [
+        ...state,
+        todo(action)
+      ]
     default:
       return state
   }
