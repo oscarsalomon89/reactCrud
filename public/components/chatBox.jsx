@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MessageList from '../containers/messageList';
+import TodoList from './TodoList';
 import ChatForm from './chatForm';
 
 const ChatBox = () => (  
@@ -9,7 +9,7 @@ const ChatBox = () => (
           <h2>Welcome to React</h2>
         </div>
         <h1 className="title">Chat with ReactJS</h1>
-        <MessageList />
+        <TodoList />
         <ChatForm />
       </div>
 )

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MessageList from '../containers/messageList';
+import TodoList from './TodoList';
 import ChatForm from './chatForm';
 
 const ChatBox = () => React.createElement(
@@ -19,7 +19,7 @@ const ChatBox = () => React.createElement(
     { className: 'title' },
     'Chat with ReactJS'
   ),
-  React.createElement(MessageList, null),
+  React.createElement(TodoList, null),
   React.createElement(ChatForm, null)
 );
 
