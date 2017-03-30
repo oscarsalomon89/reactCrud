@@ -3,7 +3,7 @@ import { obtenerMensajes } from '../actions'
 import TodoList from '../js/TodoList'
 
 const getVisibleTodos = (todos) => {    
-    obtenerMensajes();      
+    obtenerMensajes;      
     return todos;  
   }
 

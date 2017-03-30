@@ -7,6 +7,7 @@ const todo = (action) => {
       dataType: 'json',
       cache: false,
       success: function(data) {
+        console.log(data);
         return data;
       }.bind(this),
       error: function(xhr, status, err) {
@@ -36,7 +37,6 @@ const todo = (action) => {
 }
 
 const todos = (state = [], action) => {
-  console.log(action.type);
   switch (action.type) {
     case 'GET_MESSAGES':
       return [
